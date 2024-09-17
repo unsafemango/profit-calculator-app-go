@@ -33,13 +33,11 @@ func main() {
 
 	ebt, profit, ratio := calculateFinancials(revenue, expenses, taxRate)
 
-	saveResultsToFile("ebt.txt", ebt)
-	saveResultsToFile("profit.txt", profit)
-	saveResultsToFile("ratio.txt", ratio)
-
 	formatOutput(ebt)
 	formatOutput(profit)
 	formatOutput(ratio)
+
+	saveResultsToFile(ebt, profit, ratio)
 }
 
 func getUserInput(text string) (float64, error) {
@@ -48,7 +46,7 @@ func getUserInput(text string) (float64, error) {
 	fmt.Scan(&userInput)
 
 	if userInput <= 0 {
-		return 1, errors.New("Invalid input!")
+		return 1, errors.New("Invalid input.")
 	}
 	return userInput, nil
 }
@@ -65,7 +63,7 @@ func formatOutput(value float64) {
 	fmt.Printf("%.2f\n", value)
 }
 
-func saveResultsToFile(fileName string, value float64) {
-	valueText := fmt.Sprint(value)
-	os.WriteFile(fileName, []byte(valueText), 0644)
+func saveResultsToFile(ebt, profit, ratio float64) {
+	results := fmt.Sprintf("EBT: %.1f\nProfit: %.1f\nRatio: %.1f\n", ebt, profit, ratio)
+	os.WriteFile("results.txt", []byte(results), 0644)
 }
